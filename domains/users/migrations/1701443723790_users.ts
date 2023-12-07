@@ -10,7 +10,7 @@ export default class extends BaseSchema {
       table.string('username')
       table.boolean('is_admin').defaultTo(false)
       table.string('remember_me_token').nullable()
-      table.string('access_token', 180)
+      table.string('access_token')
       table.string('avatar_url')
       table.boolean('is_verified').defaultTo(false)
 
