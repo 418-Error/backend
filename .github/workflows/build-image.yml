@@ -2,7 +2,7 @@ name: Image build and push
 run-name: ${{ github.actor }} is building and pushing the image of the backend to dockerhub 🚀
 on:
   push:
-    - master
+    - ci
 
 jobs:
   push_to_registry:
