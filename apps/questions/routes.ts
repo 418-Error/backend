@@ -7,7 +7,7 @@ export default () => {
       Route.get('/unanswered', 'questions_controller.unanswered').as('questions.unanswered')
       Route.get('/:id', 'questions_controller.show').as('questions.show')
 
-
+      Route.post('/create', 'questions_controller.create').as('questions.create')
       Route.post('/', 'questions_controller.store').as('questions.store')
       Route.put('/:id', 'questions_controller.update').as('questions.update')
       Route.delete('/:id', 'questions_controller.delete').as('questions.delete')
