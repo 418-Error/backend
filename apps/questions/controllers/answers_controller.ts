@@ -2,6 +2,7 @@ import { inject } from '@adonisjs/fold'
 import AnswerService from 'App/questions/services/answer_service'
 import { type HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { CreateAnswerValidator } from 'App/questions/validators/answer_validator'
+import User from 'Domains/users/models/user'
 
 @inject()
 export default class AnswersController {
@@ -17,8 +18,13 @@ export default class AnswersController {
     return response.send(answer)
   }
 
-  public async store({ request, response }: HttpContextContract) {
+  public async store({ request, response, auth }: HttpContextContract) {
     const data = await request.validate(CreateAnswerValidator)
+    const user = auth.user as User
+
+    if (!user.isAdmin) {
+      return response.unauthorized()
+    }
 
     const answer = await this.answerService.createAnswer(data)
     return response.send(answer)
@@ -26,6 +32,11 @@ export default class AnswersController {
   public async update() {}
 
   public async vote({ params, response, auth }: HttpContextContract) {
+    const user = auth.user as User
+
+    if (!user.isAdmin) {
+      return response.unauthorized()
+    }
     const answer = await this.answerService.voteByUserId(params.id, auth.user!)
 
     return response.send(answer)

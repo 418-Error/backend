@@ -21,6 +21,40 @@ export default class QuestionsController {
     return response.send(question)
   }
 
+  public async create ({ request, response, auth }: HttpContextContract) {
+    const user = auth.user as User
+
+    if (!user.isAdmin) {
+      return response.unauthorized()
+    }
+    const name = request.input('name')
+    const description = request.input('description')
+    const answer_one = request.input('answer_one')
+    const answer_two = request.input('answer_two')
+
+    const question = await Question.create({
+      name: name,
+      description: description,
+      isActive: true
+    })
+
+    const answerOne = await Answer.create({
+      name: answer_one,
+      isValid: true,
+      questionId: question.id,
+    })
+
+    const answerTwo = await Answer.create({
+      name: answer_two,
+      isValid: false,
+      questionId: question.id,
+    })
+
+    return response.send({
+      question, answerOne, answerTwo
+    })
+  }
+
   public async unanswered({ response, auth }: HttpContextContract) {
     const user = auth.user as User
 
@@ -49,22 +83,37 @@ export default class QuestionsController {
     return response.send(question)
   }
 
-  public async store({ request, response }: HttpContextContract) {
+  public async store({ request, response, auth }: HttpContextContract) {
     const data = await request.validate(CreateQuestionValidator)
+    const user = auth.user as User
+
+    if (!user.isAdmin) {
+      return response.unauthorized()
+    }
 
     const question = await this.questionService.createQuestion(data)
 
     return response.send(question)
   }
 
-  public async update({ request, params, response }: HttpContextContract) {
+  public async update({ request, params, response, auth }: HttpContextContract) {
     const data = await request.validate(UpdateQuestionValidator)
+    const user = auth.user as User
+
+    if (!user.isAdmin) {
+      return response.unauthorized()
+    }
     const question = await this.questionService.updateById(params.id, data)
 
     return response.send(question)
   }
 
-  public async delete({ params, response }: HttpContextContract) {
+  public async delete({ params, response, auth }: HttpContextContract) {
+    const user = auth.user as User
+
+    if (!user.isAdmin) {
+      return response.unauthorized()
+    }
     const question = await this.questionService.deleteById(params.id)
 
     return response.send(question)
