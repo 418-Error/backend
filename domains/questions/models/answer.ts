@@ -1,7 +1,8 @@
 import { DateTime } from 'luxon'
-import { column, BaseModel, beforeCreate, BelongsTo, belongsTo } from '@ioc:Adonis/Lucid/Orm'
+import { column, BaseModel, beforeCreate, BelongsTo, belongsTo, manyToMany, ManyToMany} from '@ioc:Adonis/Lucid/Orm'
 import { randomUUID } from 'node:crypto'
 import Question from 'Domains/questions/models/question'
+import User from 'Domains/users/models/user'
 
 export default class Answer extends BaseModel {
   @column({ isPrimary: true })
@@ -18,6 +19,9 @@ export default class Answer extends BaseModel {
 
   @belongsTo(() => Question)
   public question: BelongsTo<typeof Question>
+
+  @manyToMany(() => User)
+  public users: ManyToMany<typeof User>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

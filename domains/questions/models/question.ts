@@ -13,6 +13,9 @@ export default class Question extends BaseModel {
   @column()
   public description: string
 
+  @column()
+  public isActive: boolean
+
   @hasMany(() => Answer)
   public answers: HasMany<typeof Answer>
 
