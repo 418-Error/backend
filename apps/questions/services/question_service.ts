@@ -13,6 +13,7 @@ interface UpdateQuestionDTO {
 class QuestionService {
   public async findAll(): Promise<Question[]> {
     return Question.query()
+      .preload('answers')
   }
 
   public async findById(questionId: string): Promise<Question> {

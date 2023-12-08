@@ -31,12 +31,22 @@ export default class QuestionsController {
 
     const ids = t.map((item) => item.questionId)
 
-    const questions = await Question.query()
+    const question = await Question.query()
       .where('is_active', true)
       .whereNotIn('id', ids)
+      .has('answers', '=', 2)
+      .preload('answers')
+      .first()
+
+    if (!question) {
+      return response.badRequest({
+        message: "no question found for this user"
+      })
+    }
 
 
-    return response.send(questions)
+
+    return response.send(question)
   }
 
   public async store({ request, response }: HttpContextContract) {
