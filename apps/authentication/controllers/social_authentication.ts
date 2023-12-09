@@ -1,5 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'Domains/users/models/user'
+import Logger from '@ioc:Adonis/Core/Logger'
+import Env from '@ioc:Adonis/Core/Env'
 
 export default class SocialAuthentication {
   public async redirect({ ally }: HttpContextContract) {
@@ -43,12 +45,14 @@ export default class SocialAuthentication {
       expiresIn: '1day',
     })
 
+    Logger.info("REFERER: ", request.header('referer'))
+
     response.cookie('token', opaqueTokenContract.token, {
       httpOnly: true,
       secure: true,
     })
 
-    response.redirect().toPath(request.header('referer') || 'http://localhost:4200')
+    response.redirect().toPath(Env.get('FRONTEND_URL'))
   }
 
 }
