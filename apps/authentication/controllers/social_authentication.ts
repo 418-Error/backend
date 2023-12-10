@@ -49,8 +49,9 @@ export default class SocialAuthentication {
 
     response.cookie('token', opaqueTokenContract.token, {
       httpOnly: true,
-      secure: true,
+      path: '/'
     })
+
 
     response.redirect().toPath(Env.get('FRONTEND_URL'))
   }
