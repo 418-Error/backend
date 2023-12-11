@@ -49,7 +49,8 @@ export default class SocialAuthentication {
 
     response.cookie('token', opaqueTokenContract.token, {
       httpOnly: true,
-      secure: true
+      secure: true,
+      domain: '.run.app'
     })
 
 
