@@ -12,29 +12,6 @@ services:
       POSTGRES_DB: backend
     ports:
       - 5432:5432
-  back:
-    container_name: backend_adonis
-    build: .
-    environment:
-      PORT: 3333
-      NODE_ENV: production
-      APP_KEY: Y-i7PbmcHOOKDH3G77-h2c1rO0ZdbXlC
-      DRIVE_DISK: local
-      DB_CONNECTION: pg
-      PG_HOST: 127.0.0.1
-      PG_PORT: 5432
-      PG_USER: lucid
-      PG_PASSWORD: lucid
-      PG_DB_NAME: lucid
-      S3_KEY: dummyKey
-      S3_SECRET: dummySecret
-      S3_BUCKET: dummyBucket
-      S3_REGION: dummyRegion
-      S3_ENDPOINT: dummyEndpoint
-      GOOGLE_CLIENT_ID: clientId
-      GOOGLE_CLIENT_SECRET: clientSecret
-    ports:
-      - 4200:3333
 
   minio:
     image: minio/minio
